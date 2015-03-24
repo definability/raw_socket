@@ -11,6 +11,11 @@
  */
 struct tcp_ip_socket;
 /**
+ * TCP IP Datagram structure.
+ * Needed to hold messages and responses.
+ */
+struct tcp_ip_datagram;
+/**
  * Generate socket with TCP and IPv4 protocols (Constructor).
  * @param sit Not NULL TCP IP Socket pointer to hold new instance.
  * @param source_ip Source IP address.

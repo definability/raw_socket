@@ -12,6 +12,13 @@ struct tcp_ip_socket {
      */
     struct sockaddr_in* sin;
     /**
+     * TCP IP Datagram.
+     */
+    struct tcp_ip_datagram* datagram;
+};
+
+struct tcp_ip_datagram {
+    /**
      * IP Header.
      */
     struct iphdr* iph;
