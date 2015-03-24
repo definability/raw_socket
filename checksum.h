@@ -26,5 +26,10 @@ int checksum_ipv4_hdr (struct tcp_ip_datagram* datagram);
  * @param datagram Datagram which should be analyzed.
  */
 int checksum_tcp_hdr (struct tcp_ip_datagram* datagram);
+/**
+ * Calculate checksum for TCP and IP version 3 headers in Datagram.
+ * @param datagram Datagram which should be analyzed.
+ */
+int checksum_datagram (struct tcp_ip_datagram* datagram);
 
 #endif

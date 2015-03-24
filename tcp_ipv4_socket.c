@@ -1,5 +1,6 @@
 #include "tcp_ipv4_socket.h"
 #include "checksum.h"
+#include "tcp_flags.h"
 
 struct tcp_ip_socket* generate_tcp_ipv4_socket (
                               const char* source_ip, const char* dest_ip,
@@ -8,6 +9,12 @@ struct tcp_ip_socket* generate_tcp_ipv4_socket (
     sit = (struct tcp_ip_socket*) malloc(sizeof(struct tcp_ip_socket));
     if (!sit) {
         fprintf(stderr, "Cannot allocate memory for socket pointer.\n");
+        return NULL;
+    }
+    sit->socket = socket (AF_INET, SOCK_RAW, IPPROTO_TCP);
+    if(sit->socket == -1)
+    {
+        perror("Failed to create socket");
         return NULL;
     }
     sit->sin = generate_sockaddr(dest_ip, dest_port);
@@ -20,6 +27,13 @@ struct tcp_ip_socket* generate_tcp_ipv4_socket (
     if (!sit->datagram) {
         free(sit->sin);
         free(sit);
+        return NULL;
+    }
+    //IP_HDRINCL to tell the kernel that headers are included in the packet
+    int one = 1;
+    if (setsockopt (sit->socket, IPPROTO_IP, IP_HDRINCL, &one, sizeof(one)) < 0)
+    {
+        perror("Error setting IP_HDRINCL");
         return NULL;
     }
     return sit;
@@ -60,8 +74,10 @@ struct tcp_ip_datagram* generate_tcp_ip_datagram (struct sockaddr_in* sin,
         free(datagram);
         return NULL;
     }
-    checksum_ipv4_hdr(datagram);
-    checksum_tcp_hdr(datagram);
+    if (checksum_datagram(datagram) != 0) {
+        free(datagram);
+        return NULL;
+    }
     return datagram;
 }
 

@@ -1,14 +1,15 @@
 #ifndef TCP_IPV4SOCKET_H
 #define TCP_IPV4SOCKET_H
 
-#include<stdio.h>       // For printf
-#include<string.h>      // memset
-#include<sys/socket.h>  // For socket ofcourse
-#include<stdlib.h>      // For exit(0);
-#include<errno.h>       // For errno - the error number
-#include<netinet/tcp.h> // Provides declarations for tcp header
-#include<netinet/ip.h>  // Provides declarations for ip header
-#include<arpa/inet.h>   // For `inet_addr'
+#include <stdio.h>       // For printf
+#include <string.h>      // memset
+#include <sys/socket.h>  // For socket ofcourse
+#include <stdlib.h>      // For exit(0);
+#include <errno.h>       // For errno - the error number
+#include <netinet/tcp.h> // Provides declarations for tcp header
+#include <netinet/ip.h>  // Provides declarations for ip header
+#include <arpa/inet.h>   // For `inet_addr'
+#include <unistd.h>      // For `close' socket
 
 /**
  * Datagram maximum message size.

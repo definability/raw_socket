@@ -58,6 +58,16 @@ int checksum_tcp_hdr (struct tcp_ip_datagram* datagram) {
     return 0;
 }
 
+int checksum_datagram (struct tcp_ip_datagram* datagram) {
+    if (checksum_ipv4_hdr(datagram) != 0) {
+        return -1;
+    }
+    if (checksum_tcp_hdr(datagram) != 0) {
+        return -1;
+    }
+    return 0;
+}
+
 unsigned short csum(unsigned short *ptr,int nbytes) {
     register long sum;
     unsigned short oddbyte;

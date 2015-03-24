@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall
-SOURCES=main tcp_ipv4_socket checksum
+SOURCES=main tcp_ipv4_socket checksum tcp_flags
 OBJ_DIR=obj
 SOURCE_FILES=$(SOURCES:%=%.c)
 OBJECTS=$(SOURCES:%=$(OBJ_DIR)/%.o)
