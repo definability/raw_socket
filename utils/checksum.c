@@ -30,12 +30,15 @@ int checksum_tcp_hdr (struct tcp_ip_datagram* datagram) {
     struct iphdr* iph;
     struct pseudo_header psh;
     char* pseudogram;
+    int psize, message_length;
 
     if (!datagram) {
         fprintf(stderr, "Datagram cannot be NULL if you want to checksum its "
                         "TCP header.\n");
         return -1;
     }
+
+    message_length = strlen(datagram->message);
 
     tcph = &(datagram->tcph);
     iph = &(datagram->iph);
@@ -45,14 +48,17 @@ int checksum_tcp_hdr (struct tcp_ip_datagram* datagram) {
     psh.dest_address = iph->daddr;
     psh.placeholder = 0;
     psh.protocol = IPPROTO_TCP;
-    psh.tcp_length = htons(sizeof(struct tcphdr) + strlen(datagram->message));
+    psh.tcp_length = htons(sizeof(struct tcphdr) + message_length);
+    
+    psize = sizeof(struct pseudo_header) + sizeof(struct tcphdr) +
+                                                    message_length;
 
-    pseudogram = malloc(iph->tot_len);
+    pseudogram = malloc(psize);
     memcpy(pseudogram, (char*)&psh, sizeof(struct pseudo_header));
     memcpy(pseudogram + sizeof(struct pseudo_header), tcph,
-           sizeof(struct tcphdr) + strlen(datagram->message));
+           sizeof(struct tcphdr) + message_length);
 
-    tcph->check = csum( (unsigned short*) pseudogram , iph->tot_len);
+    tcph->check = csum( (unsigned short*) pseudogram , psize);
 
     free(pseudogram);
     return 0;

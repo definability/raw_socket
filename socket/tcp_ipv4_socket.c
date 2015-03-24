@@ -118,6 +118,7 @@ int generate_tcp_hdr (struct tcphdr* tcph,
 }
 
 ssize_t send_datagram(struct tcp_ip_socket* sit) {
+    checksum_datagram(sit->datagram);
     if (sendto(sit->socket, sit->datagram, sit->datagram->iph.tot_len, 0,
                   (struct sockaddr*) sit->sin, sizeof(*(sit->sin))) < 0) {
         perror("Can't send datagram");

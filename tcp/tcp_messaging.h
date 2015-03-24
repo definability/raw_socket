@@ -27,21 +27,5 @@ int set_tcp_confirm (struct tcp_ip_datagram* datagram,
  */
 int _set_tcp_confirm (struct tcp_ip_datagram* datagram,
               struct tcp_ip_datagram* response, long sequence_increment);
-/**
- * Establishes TCP connection with 3-way handshake.
- */
-int tcp_handshake (struct tcp_ip_socket* s);
-/**
- * Reset TCP connection.
- */
-int tcp_reset (struct tcp_ip_socket* s, struct tcp_ip_datagram* response);
-/**
- * Close TCP connection.
- */
-int tcp_close (struct tcp_ip_socket* s);
-/**
- * Finish TCP connection closing (after server FIN message).
- */
-int tcp_fin (struct tcp_ip_socket* s, struct tcp_ip_datagram* response);
 
 #endif

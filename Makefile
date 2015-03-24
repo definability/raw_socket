@@ -3,9 +3,9 @@ CFLAGS=-Wall
 S_DIR=socket
 S_SRC=tcp_ipv4_socket 
 T_DIR=tcp
-T_SRC=tcp_flags tcp_messaging
+T_SRC=tcp_flags tcp_messaging tcp_commands
 U_DIR=utils
-U_SRC=checksum
+U_SRC=checksum addresses
 SOURCES=main $(S_SRC:%=$(S_DIR)/%) $(T_SRC:%=$(T_DIR)/%) $(U_SRC:%=$(U_DIR)/%)
 OBJ_DIR=obj
 OBJ_DIRS=$(OBJ_DIR)/$(S_DIR) $(OBJ_DIR)/$(T_DIR) $(OBJ_DIR)/$(U_DIR)
