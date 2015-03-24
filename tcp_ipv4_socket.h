@@ -38,18 +38,3 @@ int generate_ipv4_hdr (struct iphdr* iph, const char* source_ip,
  */
 int generate_tcp_hdr (struct tcphdr* tcph, const char* source_port,
                       const char* dest_port, struct sockaddr_in* sin);
-/**
- * Parse datagram and set relevant values in TCP IP Socket fields.
- * Must be called after changes in datagram:
- *      - receiving datagram from the server
- *      - working with datagram instead of corresponding `tip' fields
- * @param tip TCP IP Socket to parse and change.
- */
-int parse_datagram (struct tcp_ip_socket* tip);
-/**
- * Parse TCP IP Socket fields and renew its datagram.
- * Must be called before sending to server. Otherwise datagram will not contain
- * relevant data.
- * @param tip TCP IP Socket to parse and change.
- */
-int save_datagram (struct tcp_ip_socket* tip);
