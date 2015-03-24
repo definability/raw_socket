@@ -112,20 +112,25 @@ int generate_tcp_hdr (struct tcphdr* tcph,
     tcph->seq = rand() & 0xffff;
     tcph->ack_seq = 0;
     tcph->doff = 5;  //tcp header size
-    tcph->window = htons (5840); /* maximum allowed window size */
+    tcph->window = htons(100); //htons (5840); /* maximum allowed window size */
     tcph->check = 0; //leave checksum 0 now, filled later by pseudo header
     tcph->urg_ptr = 0;
     return 0;
 }
 
 ssize_t send_datagram(struct tcp_ip_socket* sit) {
-    return sendto(sit->socket, sit->datagram, sit->datagram->iph.tot_len, 0,
-                  (struct sockaddr*) sit->sin, sizeof(*(sit->sin)));
+    if (sendto(sit->socket, sit->datagram, sit->datagram->iph.tot_len, 0,
+                  (struct sockaddr*) sit->sin, sizeof(*(sit->sin))) < 0) {
+        perror("Can't send datagram");
+        return -1;
+    }
+    return 0;
 }
 
-struct tcp_ip_datagram* recieve_datagram(struct tcp_ip_socket* sit) {
+struct tcp_ip_datagram* receive_datagram(struct tcp_ip_socket* sit) {
     struct tcp_ip_datagram* response;
     response = (struct tcp_ip_datagram*) malloc(sizeof(struct tcp_ip_datagram));
+    memset(response->message, 0, MESSAGE_SIZE);
     recvfrom(sit->socket, (void*) response, sizeof(*response),
              0, NULL, NULL);
     return response;

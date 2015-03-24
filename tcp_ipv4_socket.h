@@ -107,6 +107,6 @@ ssize_t send_datagram(struct tcp_ip_socket* tis);
 /**
  * Receive new message to socket.
  */
-struct tcp_ip_datagram* recieve_datagram(struct tcp_ip_socket* tis);
+struct tcp_ip_datagram* receive_datagram(struct tcp_ip_socket* tis);
 
 #endif
