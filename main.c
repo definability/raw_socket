@@ -16,13 +16,21 @@ int main(int argc, const char* argv[]) {
     int source_port;
     char *dest_ip;
     char dest_host[] = "pop.i.ua";
+    char msg[120] = {0};
 
     if (argc < 2) {
+        printf("Parameters: username [port]\n");
+        exit (EXIT_FAILURE);
+    }
+    if (argc < 3) {
         source_port = 47180;
     }
     else {
-        source_port = atoi(argv[1]);
+        source_port = atoi(argv[2]);
     }
+
+
+    char* password = getpass("Enter password: ");
 
     dest_ip = get_ip_address(dest_host);
     s = generate_tcp_ipv4_socket("192.168.1.2", dest_ip,
@@ -43,7 +51,10 @@ int main(int argc, const char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    tcp_push_message(s, "USER guest\r\n");
+    tcp_push_message(s, "USER krygin2\r\n");
+    strcpy(msg, "USER");
+    strcat(msg, argv[1]);
+    strcat(msg, "\r\n");
     /*
     response = receive_datagram(s);
     set_tcp_confirm(s->datagram, response);
@@ -55,19 +66,39 @@ int main(int argc, const char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    char* password = getpass("Enter password: ");
-    char msg[120];
+    memset(msg, 0, 120);
     strcpy(msg, "PASS ");
     strcat(msg, password);
     strcat(msg, "\r\n");
     free(password);
     tcp_push_message(s, msg);
     response = receive_datagram(s);
+    printf("%s", response->message);
     set_tcp_confirm(s->datagram, response);
 
     tcp_push_message(s, "LIST\r\n");
     response = receive_datagram(s);
     printf("LIST: %s", response->message);
+    set_tcp_confirm(s->datagram, response);
+
+    tcp_push_message(s, "TOP 1 0\r\n");
+    response = receive_datagram(s);
+    printf("TOP: %s", response->message);
+    set_tcp_confirm(s->datagram, response);
+
+    tcp_push_message(s, "TOP 2 0\r\n");
+    response = receive_datagram(s);
+    printf("TOP: %s", response->message);
+    set_tcp_confirm(s->datagram, response);
+
+    tcp_push_message(s, "TOP 3 0\r\n");
+    response = receive_datagram(s);
+    printf("TOP: %s", response->message);
+    set_tcp_confirm(s->datagram, response);
+
+    tcp_push_message(s, "TOP 3 0\r\n");
+    response = receive_datagram(s);
+    printf("TOP: %s", response->message);
     set_tcp_confirm(s->datagram, response);
 
     tcp_push_message(s, "QUIT\r\n");

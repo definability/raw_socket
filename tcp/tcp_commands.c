@@ -109,6 +109,7 @@ int tcp_confirm (struct tcp_ip_socket* s) {
 
 int tcp_push_message (struct tcp_ip_socket* s, const char* message) {
     struct tcp_ip_datagram* response;
+    memset(s->datagram->message, 0, MESSAGE_SIZE);
     strcpy(s->datagram->message, message);
     add_flags(s->datagram, 0, 0, 0, 1, 0, 0);
     if (send_datagram(s) < 0) {
@@ -117,7 +118,7 @@ int tcp_push_message (struct tcp_ip_socket* s, const char* message) {
     // TODO: Check if answer is correct
     response = receive_datagram(s);
     if (!response) {
-        fprintf(stderr, "Cant receive response from server\n");
+        fprintf(stderr, "Can't receive response from server\n");
         return -1;
     }
     free(response);

@@ -111,7 +111,7 @@ int generate_tcp_hdr (struct tcphdr* tcph,
     tcph->seq = rand() & 0xffff;
     tcph->ack_seq = 0;
     tcph->doff = 5;  //tcp header size
-    tcph->window = htons(1000); //htons (5840); /* maximum allowed window size */
+    tcph->window = htons(MESSAGE_SIZE-1); /* maximum allowed window size */
     tcph->check = 0; //leave checksum 0 now, filled later by pseudo header
     tcph->urg_ptr = 0;
     return 0;
